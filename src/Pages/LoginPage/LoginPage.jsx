@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./LoginPage.css";
-import SignUpPage from "../SignUpPage/SignUpPage";
+import PopupMessage from "../../Components/PopupMessage/popupMessage";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [popup, setPopup] = useState({ type: "", message: "" }); // state to manage popup messages
 
   const handleLogin = (e) => {
     e.preventDefault();
     if (!username || !password) {
-      alert("Please enter both username and password!");
+      setPopup({ type: "error", message: "Please enter both username and password!" });
       return;
     }
-    alert("Login Successful!");
+    setPopup({ type: "success", message: "Login Successful!" });
   };
 
   return (
@@ -47,6 +48,9 @@ function LoginPage() {
           Don't have an account? <Link to="/SignUpPage">Sign up here</Link>
         </p>
       </form>
+
+      {/* Render PopupMessage with the appropriate type and message */}
+      <PopupMessage type={popup.type} message={popup.message} />
     </div>
   );
 }
