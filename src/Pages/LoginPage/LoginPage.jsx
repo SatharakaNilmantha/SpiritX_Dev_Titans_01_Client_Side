@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 import "./LoginPage.css";
 import PopupMessage from "../../Components/PopupMessage/popupMessage";
@@ -8,29 +8,34 @@ function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [popup, setPopup] = useState({ type: "", message: "" });
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     if (!username || !password) {
       setPopup({ type: "error", message: "Invalid Username or Password" });
       return;
     }
-    
+
     try {
       const response = await axios.post("http://localhost:8080/api/v1/signin", {
         username,
         password,
       });
-      
+
       if (response.status === 200) {
         setPopup({ type: "success", message: "Login Successful!" });
+
+        // Redirect to HomePage and pass the username
+        setTimeout(() => {
+          navigate("/HomePage", { state: { username } });
+        }, 1500);
       }
     } catch (error) {
       setPopup({ type: "error", message: "Invalid Username or Password" });
     }
 
-    // Automatically clear the popup message after 3 seconds
     setTimeout(() => {
       setPopup({ type: "", message: "" });
     }, 2000);
@@ -68,7 +73,6 @@ function LoginPage() {
         </p>
       </form>
 
-      {/* Render PopupMessage with the appropriate type and message */}
       <PopupMessage type={popup.type} message={popup.message} />
     </div>
   );
