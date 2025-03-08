@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./SignUpPage.css";
@@ -10,7 +11,7 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
-  
+
   const navigate = useNavigate();
 
   const validateUsername = (value) => {
@@ -46,7 +47,7 @@ function SignUpPage() {
     setErrors((prev) => ({ ...prev, confirmPassword: validateConfirmPassword(value) }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {
       username: validateUsername(username),
@@ -56,12 +57,28 @@ function SignUpPage() {
     setErrors(newErrors);
 
     if (!newErrors.username && !newErrors.password && !newErrors.confirmPassword) {
-      toast.success("Signup successful!", { position: "bottom-right" });
-      
-      // Redirect to login page after successful signup
-      setTimeout(() => {
-        navigate("/LoginPage"); // Navigate to the login page
-      }, 2000); // Optional delay for the success message
+      try {
+        const response = await axios.post("http://localhost:8080/api/v1/signup", {
+          username,
+          password,
+        });
+
+        // Handle successful signup
+        if (response.status === 201) {
+          toast.success(response.data.message, { position: "bottom-right" });
+
+          // Redirect to login page after 2 seconds
+          setTimeout(() => {
+            navigate("/LoginPage");
+          }, 2000);
+        }
+      } catch (error) {
+        if (error.response) {
+          toast.error(error.response.data.message, { position: "bottom-right" });
+        } else {
+          toast.error("Signup failed. Please try again.", { position: "bottom-right" });
+        }
+      }
     }
   };
 
@@ -73,22 +90,49 @@ function SignUpPage() {
         {/* Username Field */}
         <div>
           <label className="signup-label">Username</label>
-          <input type="text" className={`signup-input ${errors.username ? "input-error" : username ? "input-success" : ""}`}value={username}onChange={handleUsernameChange}/>
-          {errors.username ? (<p className="signup-error">{errors.username}</p>) : (username && <p className="signup-success">Valid username</p>)}
+          <input
+            type="text"
+            className={`signup-input ${errors.username ? "input-error" : username ? "input-success" : ""}`}
+            value={username}
+            onChange={handleUsernameChange}
+          />
+          {errors.username ? (
+            <p className="signup-error">{errors.username}</p>
+          ) : (
+            username && <p className="signup-success">Valid username</p>
+          )}
         </div>
 
         {/* Password Field */}
         <div>
           <label className="signup-label">Password</label>
-          <input type="password" className={`signup-input ${errors.password ? "input-error" : password ? "input-success" : ""}`} value={password}onChange={handlePasswordChange}/>
-          {errors.password ? (<p className="signup-error">{errors.password}</p>) : (password && <p className="signup-success">Strong password</p>)}
+          <input
+            type="password"
+            className={`signup-input ${errors.password ? "input-error" : password ? "input-success" : ""}`}
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          {errors.password ? (
+            <p className="signup-error">{errors.password}</p>
+          ) : (
+            password && <p className="signup-success">Strong password</p>
+          )}
         </div>
 
         {/* Confirm Password Field */}
         <div>
           <label className="signup-label">Confirm Password</label>
-          <input type="password"className={`signup-input ${errors.confirmPassword ? "input-error" : confirmPassword ? "input-success" : ""}`}value={confirmPassword}onChange={handleConfirmPasswordChange}/>
-          {errors.confirmPassword ? (<p className="signup-error">{errors.confirmPassword}</p>) : ( confirmPassword && <p className="signup-success">Passwords match</p>)}
+          <input
+            type="password"
+            className={`signup-input ${errors.confirmPassword ? "input-error" : confirmPassword ? "input-success" : ""}`}
+            value={confirmPassword}
+            onChange={handleConfirmPasswordChange}
+          />
+          {errors.confirmPassword ? (
+            <p className="signup-error">{errors.confirmPassword}</p>
+          ) : (
+            confirmPassword && <p className="signup-success">Passwords match</p>
+          )}
         </div>
 
         <button type="submit" className="signup-button">Sign Up</button>
