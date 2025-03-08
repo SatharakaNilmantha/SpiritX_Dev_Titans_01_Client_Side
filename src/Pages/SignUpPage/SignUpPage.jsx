@@ -57,6 +57,7 @@ function SignUpPage() {
     setErrors(newErrors);
 
     if (!newErrors.username && !newErrors.password && !newErrors.confirmPassword) {
+
       try {
         const response = await axios.post("http://localhost:8080/api/v1/signup", {
           username,
@@ -79,6 +80,14 @@ function SignUpPage() {
           toast.error("Signup failed. Please try again.", { position: "bottom-right" });
         }
       }
+
+      toast.success("Signup successful!", { position: "bottom-right" });
+      
+      // Redirect to login page after successful signup
+      setTimeout(() => {
+        navigate("/"); // Navigate to the login page
+      }, 2000); // Optional delay for the success message
+
     }
   };
 
@@ -139,7 +148,7 @@ function SignUpPage() {
 
         {/* Link to Login Page */}
         <div className="signup-link">
-          <p>Already have an account? <Link to="/LoginPage">Back to Login</Link></p>
+          <p>Already have an account? <Link to="/">Back to Login</Link></p>
         </div>
       </form>
       <ToastContainer />
