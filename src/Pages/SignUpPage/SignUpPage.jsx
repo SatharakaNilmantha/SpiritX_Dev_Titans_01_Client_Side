@@ -1,54 +1,104 @@
 import React, { useState } from "react";
-import './SignUpPage.css';
+import { ToastContainer, toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+
+import "./SignUpPage.css";
 
 function SignUpPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  
+  const navigate = useNavigate();
+
+  const validateUsername = (value) => {
+    return value.length >= 8 ? "" : "Username must be at least 8 characters long.";
+  };
+
+  const validatePassword = (value) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+    return regex.test(value)
+      ? ""
+      : "Password must contain at least one lowercase, one uppercase, one special character, and be at least 8 characters long.";
+  };
+
+  const validateConfirmPassword = (value) => {
+    return value === password ? "" : "Passwords do not match.";
+  };
+
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    setErrors((prev) => ({ ...prev, username: validateUsername(value) }));
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    setErrors((prev) => ({ ...prev, confirmPassword: validateConfirmPassword(value) }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // You can add any additional logic here, like sending the data to a server.
-    alert("Sign Up Successful!");
+    const newErrors = {
+      username: validateUsername(username),
+      password: validatePassword(password),
+      confirmPassword: validateConfirmPassword(confirmPassword),
+    };
+    setErrors(newErrors);
+
+    if (!newErrors.username && !newErrors.password && !newErrors.confirmPassword) {
+      toast.success("Signup successful!", { position: "bottom-right" });
+      
+      // Redirect to login page after successful signup
+      setTimeout(() => {
+        navigate("/LoginPage"); // Navigate to the login page
+      }, 2000); // Optional delay for the success message
+    }
   };
 
   return (
     <div className="signup-container">
       <form className="signup-form" onSubmit={handleSubmit}>
         <h2 className="signup-title">Sign Up</h2>
-        
+
+        {/* Username Field */}
         <div>
           <label className="signup-label">Username</label>
-          <input
-            type="text"
-            className="signup-input"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <input type="text" className={`signup-input ${errors.username ? "input-error" : username ? "input-success" : ""}`}value={username}onChange={handleUsernameChange}/>
+          {errors.username ? (<p className="signup-error">{errors.username}</p>) : (username && <p className="signup-success">Valid username</p>)}
         </div>
 
+        {/* Password Field */}
         <div>
           <label className="signup-label">Password</label>
-          <input
-            type="password"
-            className="signup-input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <input type="password" className={`signup-input ${errors.password ? "input-error" : password ? "input-success" : ""}`} value={password}onChange={handlePasswordChange}/>
+          {errors.password ? (<p className="signup-error">{errors.password}</p>) : (password && <p className="signup-success">Strong password</p>)}
         </div>
 
+        {/* Confirm Password Field */}
         <div>
           <label className="signup-label">Confirm Password</label>
-          <input
-            type="password"
-            className="signup-input"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <input type="password"className={`signup-input ${errors.confirmPassword ? "input-error" : confirmPassword ? "input-success" : ""}`}value={confirmPassword}onChange={handleConfirmPasswordChange}/>
+          {errors.confirmPassword ? (<p className="signup-error">{errors.confirmPassword}</p>) : ( confirmPassword && <p className="signup-success">Passwords match</p>)}
         </div>
 
         <button type="submit" className="signup-button">Sign Up</button>
+
+        {/* Link to Login Page */}
+        <div className="signup-link">
+          <p>Already have an account? <Link to="/LoginPage">Back to Login</Link></p>
+        </div>
       </form>
+      <ToastContainer />
     </div>
   );
 }
