@@ -57,7 +57,6 @@ function SignUpPage() {
     setErrors(newErrors);
 
     if (!newErrors.username && !newErrors.password && !newErrors.confirmPassword) {
-
       try {
         const response = await axios.post("http://localhost:8080/api/v1/signup", {
           username,
@@ -66,11 +65,14 @@ function SignUpPage() {
 
         // Handle successful signup
         if (response.status === 201) {
+          // Store the JWT token in localStorage
+          localStorage.setItem("jwtToken", response.data.token);
+
           toast.success(response.data.message, { position: "bottom-right" });
 
           // Redirect to login page after 2 seconds
           setTimeout(() => {
-            navigate("/");
+            navigate("/"); // Navigate to login page
           }, 2000);
         }
       } catch (error) {
