@@ -11,7 +11,7 @@ function LoginPage() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (!username || !password) {
-      setPopup({ type: "error", message: "Please enter both username and password!" });
+      setPopup({ type: "error", message: "Invalid Username or Password" });
     } else {
       setPopup({ type: "success", message: "Login Successful!" });
     }
