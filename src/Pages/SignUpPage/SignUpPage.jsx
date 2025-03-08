@@ -60,7 +60,7 @@ function SignUpPage() {
       
       // Redirect to login page after successful signup
       setTimeout(() => {
-        navigate("/LoginPage"); // Navigate to the login page
+        navigate("/"); // Navigate to the login page
       }, 2000); // Optional delay for the success message
     }
   };
@@ -95,7 +95,7 @@ function SignUpPage() {
 
         {/* Link to Login Page */}
         <div className="signup-link">
-          <p>Already have an account? <Link to="/LoginPage">Back to Login</Link></p>
+          <p>Already have an account? <Link to="/">Back to Login</Link></p>
         </div>
       </form>
       <ToastContainer />

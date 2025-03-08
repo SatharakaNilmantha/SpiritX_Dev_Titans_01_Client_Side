@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./LoginPage.css";
+import SignUpPage from "../SignUpPage/SignUpPage";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -40,6 +42,10 @@ function LoginPage() {
         </div>
 
         <button type="submit" className="login-button">Login</button>
+
+        <p className="signup-link">
+          Don't have an account? <Link to="/SignUpPage">Sign up here</Link>
+        </p>
       </form>
     </div>
   );
