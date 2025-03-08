@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginPage.css";
 import PopupMessage from "../../Components/PopupMessage/popupMessage";
@@ -8,7 +8,7 @@ function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [popup, setPopup] = useState({ type: "", message: "" });
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -25,9 +25,11 @@ function LoginPage() {
       });
 
       if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem("jwtToken", token); // Store JWT token
+
         setPopup({ type: "success", message: "Login Successful!" });
 
-        // Redirect to HomePage and pass the username
         setTimeout(() => {
           navigate("/HomePage", { state: { username } });
         }, 1500);
