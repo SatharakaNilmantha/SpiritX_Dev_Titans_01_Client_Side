@@ -9,13 +9,11 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path="/" element={<SignUpPage/>} />
-        <Route path="/LoginPage" element={<LoginPage />} />
+         <Route path="/" element={<LoginPage />} />
+         <Route path="/SignUpPage" element={<SignUpPage/>} />
       </Routes>
     </Router>
   );   
-  
-
 }
 
 export default App;
