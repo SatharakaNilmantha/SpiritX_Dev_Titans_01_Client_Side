@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Navigation Hook
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -40,6 +42,14 @@ function LoginPage() {
         </div>
 
         <button type="submit" className="login-button">Login</button>
+
+        {/* New Create Account Button */}
+        <p className="signup-text">
+          Don't have an account?{" "}
+          <button className="signup-link" onClick={() => navigate("/signup")}>
+            Create new account
+          </button>
+        </p>
       </form>
     </div>
   );
