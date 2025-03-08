@@ -8,6 +8,14 @@ This repository contains a web application for the user login and signup form, d
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/spiritx-competition-stage-01.git
-cd spiritx-competition-stage-01
+git clone https://github.com/SatharakaNilmantha/SpiritX_Dev_Titans_01_Client_Side.git
+cd SpiritX_Dev_Titans_01_Client_Side
 
+### 2. Install Dependencies
+Make sure you have Node.js installed. Then, install the project dependencies using npm or yarn:
+
+```bash
+npm install
+
+### 3. Vite Setup
+This project uses Vite for fast builds and hot module replacement (HMR). To start the development server, run:
