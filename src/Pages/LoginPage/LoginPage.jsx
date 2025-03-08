@@ -12,9 +12,14 @@ function LoginPage() {
     e.preventDefault();
     if (!username || !password) {
       setPopup({ type: "error", message: "Please enter both username and password!" });
-      return;
+    } else {
+      setPopup({ type: "success", message: "Login Successful!" });
     }
-    setPopup({ type: "success", message: "Login Successful!" });
+
+    // Automatically clear the popup message after 3 seconds
+    setTimeout(() => {
+      setPopup({ type: "", message: "" });
+    }, 2000);
   };
 
   return (
@@ -44,7 +49,7 @@ function LoginPage() {
 
         <button type="submit" className="login-button">Login</button>
 
-        <p className="signup-link">
+        <p className="login-link">
           Don't have an account? <Link to="/SignUpPage">Sign up here</Link>
         </p>
       </form>
