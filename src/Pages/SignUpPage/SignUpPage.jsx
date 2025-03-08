@@ -70,7 +70,7 @@ function SignUpPage() {
 
           // Redirect to login page after 2 seconds
           setTimeout(() => {
-            navigate("/LoginPage");
+            navigate("/");
           }, 2000);
         }
       } catch (error) {
@@ -80,14 +80,6 @@ function SignUpPage() {
           toast.error("Signup failed. Please try again.", { position: "bottom-right" });
         }
       }
-
-      toast.success("Signup successful!", { position: "bottom-right" });
-      
-      // Redirect to login page after successful signup
-      setTimeout(() => {
-        navigate("/"); // Navigate to the login page
-      }, 2000); // Optional delay for the success message
-
     }
   };
 
