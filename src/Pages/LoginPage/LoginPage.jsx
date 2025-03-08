@@ -1,19 +1,33 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./LoginPage.css";
 import PopupMessage from "../../Components/PopupMessage/popupMessage";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [popup, setPopup] = useState({ type: "", message: "" }); // state to manage popup messages
+  const [popup, setPopup] = useState({ type: "", message: "" });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    
     if (!username || !password) {
       setPopup({ type: "error", message: "Invalid Username or Password" });
-    } else {
-      setPopup({ type: "success", message: "Login Successful!" });
+      return;
+    }
+    
+    try {
+      const response = await axios.post("http://localhost:8080/api/v1/signin", {
+        username,
+        password,
+      });
+      
+      if (response.status === 200) {
+        setPopup({ type: "success", message: "Login Successful!" });
+      }
+    } catch (error) {
+      setPopup({ type: "error", message: "Invalid Username or Password" });
     }
 
     // Automatically clear the popup message after 3 seconds
