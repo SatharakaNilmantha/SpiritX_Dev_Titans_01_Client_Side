@@ -10,12 +10,34 @@ First, clone the repository to your local machine:
 ```bash
 git clone https://github.com/SatharakaNilmantha/SpiritX_Dev_Titans_01_Client_Side.git
 cd SpiritX_Dev_Titans_01_Client_Side
+ ```
 
 ### 2. Install Dependencies
 Make sure you have Node.js installed. Then, install the project dependencies using npm or yarn:
 
 ```bash
 npm install
+```
+ or
+ 
+```bash
+yarn install
+```
 
 ### 3. Vite Setup
 This project uses Vite for fast builds and hot module replacement (HMR). To start the development server, run:
+
+
+```bash
+npm run dev
+```
+
+```bash
+yarn dev
+```
+
+### 4. Features
+. User login form: Allows registered users to log in with their credentials.
+. User signup form: Allows new users to register by providing necessary details.
+. Built using React and Vite for fast development and smooth HMR (Hot Module Replacement).
+. Responsive and user-friendly interface for  desktop 
